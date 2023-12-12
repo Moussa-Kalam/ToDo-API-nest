@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Category } from './entities/category.entity';
 
 @Injectable()
@@ -22,6 +22,10 @@ export class CategoryService {
     const categoryIndex = this.categories.findIndex(
       (category) => category.id === id,
     );
+
+    if (categoryIndex < 0)
+      throw new NotFoundException(`Category #${id} not found`);
+
     if (categoryIndex >= 0) {
       this.categories.splice(categoryIndex, 1);
     }
