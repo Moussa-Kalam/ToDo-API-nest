@@ -5,8 +5,8 @@ import { db } from 'src/db/database';
 @Injectable()
 export class TaskRepository {
   async findAll() {
-    const data = await db.getData('/tasks');
-    return data;
+    const tasks = await db.getData('/tasks');
+    return tasks;
   }
 
   async findOne(index: number) {

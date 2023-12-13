@@ -32,7 +32,7 @@ export class TaskService {
       status: Status.Open,
       ...createTaskDto,
     };
-    this.taskRepository.create(newTask);
+    return this.taskRepository.create(newTask);
   }
 
   async remove(id: string) {

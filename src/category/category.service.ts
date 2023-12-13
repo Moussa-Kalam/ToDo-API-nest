@@ -1,33 +1,34 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Category } from './entities/category.entity';
+import { v4 as uuidv4 } from 'uuid';
+import { CategoryRepository } from './category.repository';
+import { CreateCategoryDto } from './dto/create-category.dto';
+import { db } from 'src/db/database';
 
 @Injectable()
 export class CategoryService {
-  private categories: Category[] = [
-    {
-      id: 'fake-id',
-      name: 'Coding',
-    },
-  ];
+  constructor(private readonly categoryRepository: CategoryRepository) {}
 
   findAll() {
-    return this.categories;
+    return this.categoryRepository.findAll();
   }
 
-  create(createCategoryDto: any) {
-    this.categories.push(createCategoryDto);
+  async create(createCategoryDto: CreateCategoryDto) {
+    const id = uuidv4();
+    const newCategory = {
+      id,
+      ...createCategoryDto,
+    };
+
+    return this.categoryRepository.create(newCategory);
   }
 
-  remove(id: string) {
-    const categoryIndex = this.categories.findIndex(
-      (category) => category.id === id,
-    );
-
-    if (categoryIndex < 0)
-      throw new NotFoundException(`Category #${id} not found`);
-
-    if (categoryIndex >= 0) {
-      this.categories.splice(categoryIndex, 1);
+  async remove(id: string) {
+    try {
+      const index = await db.getIndex('/categories', id);
+      if (index < 0) throw new NotFoundException(`Category #${id} not found`);
+      return this.categoryRepository.remove(index);
+    } catch (err) {
+      throw err;
     }
   }
 }
