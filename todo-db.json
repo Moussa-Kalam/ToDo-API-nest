@@ -1,13 +1,4 @@
 {
     "tasks": [],
-    "categories": [
-        {
-            "id": "f7c7d519-0713-4544-9d0f-c13f474fbc4e",
-            "name": "Coding"
-        },
-        {
-            "id": "c7189bf9-b4c8-44b4-9be2-29d287aa2b70",
-            "name": "Sports"
-        }
-    ]
+    "categories": []
 }
